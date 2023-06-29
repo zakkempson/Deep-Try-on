@@ -11,39 +11,13 @@ const VIDEO_TIME_LIMIT_SECONDS = 10;
 const effects = {
   effect1: {
     trigger: "effect1",
-    path: "airmax.deepar",
-    name: "Prada Symbole - Black",
-  },
-  effect2: {
-    trigger: "effect2",
-    path: "https://demo.deepar.ai/ads/effects/prada-PR14Z_E19D_FE01T_C_050.deepar",
-    name: "Prada Symbole - Marbleized Black and Yellow",
-  },
-  effect3: {
-    trigger: "effect3",
-    path: "https://demo.deepar.ai/ads/effects/prada-PR14Z_E142_F05S0_C_050.deepar",
-    name: "Prada Symbole - Chalk White",
-  },
-  effect4: {
-    trigger: "effect4",
-    path: "https://demo.deepar.ai/ads/effects/prada-SPR26Z_E12L_FE08Z_C_055.deepar",
-    name: "Prada Symbole, Oval - Orange",
-  },
-  effect5: {
-    trigger: "effect5",
-    path: "https://demo.deepar.ai/ads/effects/prada-SPR26Z_E16K_FE08Z_C_055.deepar",
-    name: "Prada Symbole, Oval - Black",
-  },
-  effect6: {
-    trigger: "effect6",
-    path: "https://demo.deepar.ai/ads/effects/prada-SPR26Z_E17K_FE08Z_C_055.deepar",
-    name: "Prada Symbole, Oval - Chalk White",
-  },
+    path: "simple-hat.deepar",
+    name: "Nike shoes",
+  }
 };
 
 async function main() {
   initialLoading();
-
   const loadingProgressBar = document.getElementById("loading-progress-bar");
   loadingProgressBar.style.width = "100%";
 
@@ -461,15 +435,7 @@ async function main() {
   };
   window.addEventListener("resize", updateCanvasSize);
 
-  const infoLogo = document.getElementById("info-logo");
-  infoLogo.onclick = () => {
 
-    const infoSlideIndex = Object.values(effects).length;
-
-    glassesCarousel.setActiveSlide(infoSlideIndex);
-    glassesCarousel.moveToActiveSlide();
-    moreInfoScreenEvent();
-  };
 
   const closeShareImage = document.getElementById("close-share-image");
   if (closeShareImage) {

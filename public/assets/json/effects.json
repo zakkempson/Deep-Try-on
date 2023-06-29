@@ -1,0 +1,32 @@
+{
+    "products":[
+        {
+            "id":1,
+            "productName":"Prada Glasses",
+            "img":"assets/images/tryon/prada-glasses.jpg",
+            "price":99,
+            "desc":"Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
+            "path":"2myshPBPvddWWL0oPjemD7",
+            "likes":20
+        },
+        {
+            "id":2,
+            "productName":"Prada Glasses",
+            "img":"assets/images/tryon/prada-glasses.jpg",
+            "price":99,
+            "desc":"Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
+            "path":"2myshPBPvddWWL0oPjemD7",
+            "likes":20
+        },
+        {
+            "id":3,
+            "productName":"Prada Glasses",
+            "img":"assets/images/tryon/prada-glasses.jpg",
+            "price":99,
+            "desc":"Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
+            "path":"2myshPBPvddWWL0oPjemD7",
+            "likes":20
+        }
+      
+    ]
+}
