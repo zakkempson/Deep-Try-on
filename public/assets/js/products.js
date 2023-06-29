@@ -4,7 +4,7 @@ console.log(slider);
 let products = []
 // Function to fetch the JSON data
 async function fetchJSONData() {
-    await fetch('../assets/json/effects.json')
+    await fetch('assets/json/effects.json')
         .then(response => response.json())
         .then(data => {
             // Access the 'products' array
