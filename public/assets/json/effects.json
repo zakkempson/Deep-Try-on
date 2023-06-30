@@ -1,32 +1,43 @@
 {
-    "products":[
+    "products": [
         {
-            "id":1,
-            "productName":"Prada Glasses",
-            "img":"assets/images/tryon/prada-glasses.jpg",
-            "price":99,
-            "desc":"Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
-            "path":"2myshPBPvddWWL0oPjemD7",
-            "likes":20
+            "id": 1,
+            "productName": "Prada Glasses",
+            "img": "assets/images/tryon/prada.jpg",
+            "price": 199,
+            "effect1": {
+                "trigger": "effect1",
+                "path": "assets/effects/prada-glasses.deepar",
+                "name": "Prada Glasses"
+            },
+            "desc": "Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
+            "likes": 220
         },
         {
-            "id":2,
-            "productName":"Prada Glasses",
-            "img":"assets/images/tryon/prada-glasses.jpg",
-            "price":99,
-            "desc":"Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
-            "path":"2myshPBPvddWWL0oPjemD7",
-            "likes":20
+            "id": 2,
+            "productName": "Airmax Nike shoes",
+            "img": "assets/images/tryon/airmax-shoe2.jpg",
+            "price": 299,
+            "effect1": {
+                "trigger": "effect1",
+                "path": "assets/effects/airmax.deepar",
+                "name": "Airmax Nike shoes"
+            },
+            "desc": "Designed with the iconic Airmax cushioning system, these shoes offer exceptional comfort and impact absorption. The advanced cushioning technology provides a responsive and supportive feel, allowing you to stay comfortable and confident during your workouts or everyday activities.",
+            "likes": 123
         },
         {
-            "id":3,
-            "productName":"Prada Glasses",
-            "img":"assets/images/tryon/prada-glasses.jpg",
-            "price":99,
-            "desc":"Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
-            "path":"2myshPBPvddWWL0oPjemD7",
-            "likes":20
+            "id": 3,
+            "productName": "Black Jens Hat",
+            "img": "assets/images/tryon/jens-hat.jpg",
+            "price": 99,
+            "effect1": {
+                "trigger": "effect1",
+                "path": "assets/effects/simple-hat.deepar",
+                "name": "Black Jens Hat"
+            },
+            "desc": "With its timeless black color, the Black Jens Hat effortlessly complements any outfit, making it a versatile addition to your wardrobe. Step up your fashion game with this stylish and reliable hoodie that is sure to make a statement wherever you go.",
+            "likes": 267
         }
-      
     ]
 }

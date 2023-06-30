@@ -24234,6 +24234,22 @@ body.active-light-mode {
   background-image: linear-gradient(to top, #0c0c2100 0%, #edf0f2ab 87%);
 }
 /*# sourceMappingURL=../maps/style.css.map */
+.tab-content {
+  display: flex;
+  justify-content: center;
+}
+.tab-content .link{
+  position: absolute;
+  background-color: var(--color-primary-alta);
+  border-radius: 8px;
+  padding: 10px;
+  bottom: -20px;
+  font-size: 1.8rem;
+}
+.tab-pane .link:hover{
+  background-color: var(--color-primary);
+  color: white;
+}
 
 
 /*=============== SCROLL BAR ===============*/
