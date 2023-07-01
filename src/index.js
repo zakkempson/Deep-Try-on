@@ -143,15 +143,13 @@ async function main() {
   watermarkedCanvas.width = Math.floor(window.innerWidth * scale);
   watermarkedCanvas.height = Math.floor(window.innerHeight * scale);
   const watermarkCtx = watermarkedCanvas.getContext("2d");
-
   let deepAR = null;
-
   if (!deepAR) {
     try {
-      const scale = window.devicePixelRatio; // avoid a blurry canvas on high DPI screens
+      const scale = window.devicePixelRatio;
       canvas.width = Math.floor(window.innerWidth * scale);
       canvas.height = Math.floor(window.innerHeight * scale);
-
+  
       deepAR = await deepar.initialize({
         licenseKey: "d0ed18eca49f760439c1d7a5fab6e56981a85daef65cea34ef2e52baf4d9464df0a8a4508ef93971",
         canvas,
@@ -167,18 +165,44 @@ async function main() {
           },
         },
       });
-
+  
       window.effectPath = effects.effect1.path;
       window.effectName = effects.effect1.name;
       deepARInitialisedEvent(platform);
-
+  
       const effectTitleElement = document.getElementById("effect-title");
       effectTitleElement.innerHTML = effects.effect1.name;
-
+  
       setUiScreen("ar-screen");
       arLoadedEvent();
       trackUsage();
-
+  
+      deepAR.callbacks = {}; // Create an empty object for deepAR.callbacks
+  
+      deepAR.callbacks.__deeparRendered = function () {
+        // this allows us to render graphics (like a logo) on top of the deepAR canvas for the video recording
+        if (!isRecording) {
+          return;
+        }
+        const milliseconds = Date.now() - recordingStarted;
+        const seconds = Math.floor(milliseconds / 1000);
+        window.videoRecordingDurationSeconds = seconds;
+        appendSeconds.innerHTML = seconds;
+        circularProgressBar.setPercent(milliseconds / 10000);
+  
+        if (seconds >= VIDEO_TIME_LIMIT_SECONDS && isRecording) {
+          stopRecordingWithCallback();
+        }
+  
+        watermarkCtx.drawImage(
+          canvas,
+          0,
+          0,
+          watermarkedCanvas.width,
+          watermarkedCanvas.height
+        );
+      };
+  
       deepAR.callbacks.onFaceTracked = function (face) {
         if (!faceTracked) {
           faceTracked = true;
@@ -186,256 +210,13 @@ async function main() {
         }
       };
     } catch (error) {
-      console.log("error initialising deepAR");
-      // permission not granted or some other issue
+      console.log("Error initializing deepAR:", error);
       setUiScreen("permission-denied");
-      console.log("deepAR error", error);
       cameraPermissionDeniedEvent();
     }
   }
+  
 
-  deepAR.callbacks.__deeparRendered = function () {
-    // this allows us to render graphics (like a logo) on top of the deepAR canvas for the video recording
-    if (!isRecording) {
-      return;
-    }
-    const milliseconds = Date.now() - recordingStarted;
-    const seconds = Math.floor(milliseconds / 1000);
-    window.videoRecordingDurationSeconds = seconds;
-    appendSeconds.innerHTML = seconds;
-    circularProgressBar.setPercent(milliseconds / 10000);
-
-    if (seconds >= VIDEO_TIME_LIMIT_SECONDS && isRecording) {
-      stopRecordingWithCallback();
-    }
-
-    
-  };
-
-  async function handleSelectEffect(effect) {
-    if (!deepAR) return;
-    const effectTitleElement = document.getElementById("effect-title");
-    effectTitleElement.innerHTML = effect.name;
-    effectSelectedEvent(effect);
-    window.effectPath = effect.path;
-    window.effectName = effect.name;
-    const loadingSpinner = document.getElementById("loading-spinner");
-    if (loadingSpinner) loadingSpinner.style.display = "block";
-    await deepAR.switchEffect(effectPath);
-    if (loadingSpinner) loadingSpinner.style.display = "none";
-  }
-
-  const glassesCarousel = new Carousel("carousel");
-  glassesCarousel.onChange = (value) => {
-    // switch effects
-    const effectsArray = Object.values(effects);
-
-    const effectTitleElement = document.getElementById("effect-title");
-    effectTitleElement.innerHTML = effects.effect1.name;
-
-    if (value === currentCarouselIndex) return;
-
-    if (value === effectsArray.length) {
-      // open more info screen
-      const infoLogo = document.getElementById("info-logo");
-      infoLogo.style.display = "none";
-      effectTitleElement.style.display = "none";
-      const moreInfoScreen = document.getElementById("more-info-screen");
-      moreInfoScreen.style.display = "block";
-      moreInfoScreenEvent();
-    } else {
-      // close more info screen and switch effect
-      const infoLogo = document.getElementById("info-logo");
-      infoLogo.style.display = "block";
-      effectTitleElement.style.display = "block";
-
-      const moreInfoScreen = document.getElementById("more-info-screen");
-      moreInfoScreen.style.display = "none";
-
-      handleSelectEffect(effectsArray[value]);
-    }
-
-    currentCarouselIndex = value;
-  };
-  glassesCarousel.onActiveClick = async () => {
-    // take a screenshot and share it
-    const screenshotDataURL = await deepAR.takeScreenshot();
-
-    takePhotoEvent();
-
-    const screenshotImg = await loadImage(screenshotDataURL);
-
-    var newScreenshotCanvas = document.createElement("canvas");
-
-    const scale = window.devicePixelRatio; // avoid a blurry canvas on high DPI screens
-    newScreenshotCanvas.width = Math.floor(window.innerWidth * scale);
-    newScreenshotCanvas.height = Math.floor(window.innerHeight * scale);
-
-    var context = newScreenshotCanvas.getContext("2d");
-    context.drawImage(
-      screenshotImg,
-      0,
-      0,
-      newScreenshotCanvas.width,
-      newScreenshotCanvas.height
-    );
-
-    // draw logos on here
-    if (!!logoImg) {
-      var logoHeight = 20 * 3;
-      var logoWidth = 128 * 3;
-
-      context.drawImage(
-        logoImg,
-        newScreenshotCanvas.width / 2 - logoWidth / 2,
-        logoHeight * 3,
-        logoWidth,
-        logoHeight
-      );
-    }
-
-    const imageContainer = document.getElementById("share-image-container");
-
-    if (!imageContainer) {
-      console.log("no image container");
-      return;
-    }
-
-    while (imageContainer.firstChild) {
-      imageContainer.removeChild(imageContainer.firstChild);
-    }
-
-    var img = new Image();
-    img.src = newScreenshotCanvas.toDataURL("image/jpeg");
-    img.style.margin = "auto";
-    img.style.height = "100%";
-    img.style.objectFit = "contain";
-    img.style.borderRadius = "12px";
-    imageContainer.appendChild(img);
-
-    window.screenshotCanvas = newScreenshotCanvas;
-
-    setUiScreen("share-image");
-    deepAR.setPaused(true);
-  };
-
-  const stopRecordingWithCallback = async () => {
-    const downloadButton = document.getElementById("share-video-btn");
-    const shareButtonText = document.getElementById("share-video-btn-text");
-    const shareButtonLoader = document.getElementById("share-video-btn-loader");
-    const shareButtonDownloadIcon = document.getElementById(
-      "share-video-btn-download-icon"
-    );
-    const shareButtonSendIcon = document.getElementById(
-      "share-video-btn-send-icon"
-    );
-
-    if (downloadButton) {
-      if (shareButtonLoader) {
-        shareButtonLoader.style.display = "block";
-      }
-      if (shareButtonText) {
-        shareButtonText.textContent = "";
-      }
-
-      if (shareButtonDownloadIcon) {
-        shareButtonDownloadIcon.style.display = "none";
-      }
-
-      if (shareButtonSendIcon) {
-        shareButtonSendIcon.style.display = "none";
-      }
-
-      downloadButton.onclick = () => {};
-    }
-
-    endVideoRecordingEvent(window.videoRecordingDurationSeconds);
-
-    isRecording = false;
-    seconds = 0;
-    window.videoRecordingDurationSeconds = 0;
-    appendSeconds.innerHTML = seconds;
-    initProgressBar();
-
-    const browser = platform.name.toLowerCase();
-
-    let mp4Blob;
-
-    if (browser === "safari" || platform.os.family === "iOS") {
-      const { recordedVideoBlob } =
-        await stopRecordingiOS();
-      mp4Blob = recordedVideoBlob;
-    } else {
-      mp4Blob = await stopRecording();
-    }
-
-    try {
-      deepAR.setPaused(true);
-      recordingStatus.style.display = "none";
-      setUiScreen("share-video");
-
-      const video = document.getElementById("player");
-      const recordedVideoUrl = URL.createObjectURL(mp4Blob);
-      video.src = recordedVideoUrl;
-
-      if (downloadButton) {
-        const webShareSupported = "canShare" in navigator;
-
-        if (shareButtonLoader) {
-          shareButtonLoader.style.display = "none";
-        }
-        if (shareButtonText) {
-          shareButtonText.textContent = webShareSupported
-            ? "Share"
-            : "Download";
-        }
-
-        if (shareButtonDownloadIcon) {
-          shareButtonDownloadIcon.style.display = webShareSupported
-            ? "none"
-            : "block";
-        }
-
-        if (shareButtonSendIcon) {
-          shareButtonSendIcon.style.display = webShareSupported
-            ? "block"
-            : "none";
-        }
-
-        downloadButton.onclick = () => {
-          shareOrDownload(mp4Blob, "deepar-ar-effect.mp4");
-        };
-      }
-    } catch (err) {
-      alert(err);
-    }
-  };
-
-  glassesCarousel.onActiveHoldStart = async () => {
-    const browser = platform.name.toLowerCase();
-    if (!isRecording && browser !== "firefox") {
-      recordingStarted = Date.now();
-
-      if (browser === "safari" || platform.os.family === "iOS") {
-        isRecording = true;
-        startRecordingiOS(watermarkedCanvas);
-      } else {
-        await startRecording(
-          canvas,
-          deepAR,
-          circularProgressBar
-        );
-      }
-
-      recordingStatus.style.display = "flex";
-      startVideoRecordingEvent();
-    }
-  };
-
-  glassesCarousel.onActiveHoldEnd = async () => {
-    console.log("active hold end");
-    stopRecordingWithCallback();
-  };
 
   const updateCanvasSize = () => {
     const scale = window.devicePixelRatio; // avoid a blurry canvas on high DPI screens
