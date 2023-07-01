@@ -35,10 +35,12 @@ function display() {
         res += `
         <div class="col-md-4">
         <div class="product-style-one">
+        <a href="product-details.html?id=${product.id}">
             <div class="card-thumbnail">
-            <a href="product-details.html?id=${product.id}"><img class="w-100" src="${product.img}" alt="NFT_portfolio"></a>
+            <img class="w-100" src="${product.img}" alt="NFT_portfolio">
             
             </div>
+            </a>
             <div class="product-share-wrapper">
                 <div class="share-btn share-btn-activation dropdown">
                     <button class="icon" data-bs-toggle="dropdown" aria-expanded="false">
