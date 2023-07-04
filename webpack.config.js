@@ -17,5 +17,10 @@ module.exports = {
     minimize: true,
     minimizer: [new TerserPlugin()],
   },
+  devServer: {
+    // other devServer configurations
+    disableHostCheck: true,
+  }
+  
 };
 
