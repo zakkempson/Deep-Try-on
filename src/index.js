@@ -1,9 +1,6 @@
 import * as deepar from "deepar";
 import platform from "platform";
-import Carousel from "./carousel.js";
 import { CircularProgressBar } from "./circularProgressBar.js";
-import { stopRecording, startRecording, startRecordingiOS, stopRecordingiOS } from "./mp4CanvasRecorder.js";
-import QRCode from "qrcode";
 
 const VIDEO_TIME_LIMIT_SECONDS = 10;
 let queryString = window.location.search;
@@ -53,30 +50,22 @@ async function main() {
   initialLoading();
   const loadingProgressBar = document.getElementById("loading-progress-bar");
   loadingProgressBar.style.width = "100%";
-
   const main = document.getElementById("main");
   main.style.visibility = "visible";
 
   let faceTracked = false;
-  let currentCarouselIndex = 0;
-
   const canvas = document.getElementById("deepar-canvas");
   var appendSeconds = document.getElementById("seconds");
-  const recordingStatus = document.getElementById("recording-status");
   const recordingStateCanvas = document.getElementById(
     "recording-status-canvas"
   );
-
   const pixelRatio = window.devicePixelRatio || 1; // avoid a blurry canvas on high DPI screens
   const width = Math.min(recordingStateCanvas.width * pixelRatio);
   const height = Math.min(recordingStateCanvas.height * pixelRatio);
   recordingStateCanvas.width = width;
   recordingStateCanvas.height = height;
-
-  let seconds = 0;
   let isRecording = false;
   let recordingStarted;
-
   function setUiScreen(screen) {
     console.log("setUiScreen", screen);
     var loadingScreen = document.getElementById("loading");
@@ -84,12 +73,10 @@ async function main() {
     const shareImageScreen = document.getElementById("share-image");
     const shareVideoScreen = document.getElementById("share-video");
     const permissionDeniedScreen = document.getElementById("permission-denied");
-
     const main = document.getElementById("main");
     if (main.style.visibility === "hidden") {
       return;
     }
-
     const switchScreens = (newScreen = "loading") => {
       loadingScreen.style.visibility =
         newScreen === "loading" ? "visible" : "hidden";
@@ -102,14 +89,11 @@ async function main() {
       permissionDeniedScreen.style.visibility =
         newScreen === "permission-denied" ? "visible" : "hidden";
     };
-
     switchScreens(screen);
   }
   setUiScreen("loading");
-
   let recordingStateCtx;
   let circularProgressBar;
-
   const initProgressBar = () => {
     recordingStateCtx = recordingStateCanvas.getContext("2d");
     recordingStateCtx.fillStyle = "#000";
@@ -133,13 +117,9 @@ async function main() {
     };
     circularProgressBar.draw();
   };
-
-
   initProgressBar();
-
-  // watermarked canvas
   const watermarkedCanvas = document.getElementById("watermarked-canvas");
-  const scale = window.devicePixelRatio; // avoid a blurry canvas on high DPI screens
+  const scale = window.devicePixelRatio;
   watermarkedCanvas.width = Math.floor(window.innerWidth * scale);
   watermarkedCanvas.height = Math.floor(window.innerHeight * scale);
   const watermarkCtx = watermarkedCanvas.getContext("2d");
@@ -149,7 +129,6 @@ async function main() {
       const scale = window.devicePixelRatio;
       canvas.width = Math.floor(window.innerWidth * scale);
       canvas.height = Math.floor(window.innerHeight * scale);
-  
       deepAR = await deepar.initialize({
         licenseKey: "d0ed18eca49f760439c1d7a5fab6e56981a85daef65cea34ef2e52baf4d9464df0a8a4508ef93971",
         canvas,
@@ -165,22 +144,16 @@ async function main() {
           },
         },
       });
-  
       window.effectPath = effects.effect1.path;
       window.effectName = effects.effect1.name;
       deepARInitialisedEvent(platform);
-  
       const effectTitleElement = document.getElementById("effect-title");
       effectTitleElement.innerHTML = effects.effect1.name;
-  
       setUiScreen("ar-screen");
       arLoadedEvent();
       trackUsage();
-  
-      deepAR.callbacks = {}; // Create an empty object for deepAR.callbacks
-  
+      deepAR.callbacks = {};
       deepAR.callbacks.__deeparRendered = function () {
-        // this allows us to render graphics (like a logo) on top of the deepAR canvas for the video recording
         if (!isRecording) {
           return;
         }
@@ -189,7 +162,6 @@ async function main() {
         window.videoRecordingDurationSeconds = seconds;
         appendSeconds.innerHTML = seconds;
         circularProgressBar.setPercent(milliseconds / 10000);
-  
         if (seconds >= VIDEO_TIME_LIMIT_SECONDS && isRecording) {
           stopRecordingWithCallback();
         }
@@ -216,8 +188,6 @@ async function main() {
     }
   }
   
-
-
   const updateCanvasSize = () => {
     const scale = window.devicePixelRatio; // avoid a blurry canvas on high DPI screens
     var canvasWidth = Math.floor(window.innerWidth * scale);
@@ -228,9 +198,6 @@ async function main() {
     canvas.height = canvasHeight;
   };
   window.addEventListener("resize", updateCanvasSize);
-
-
-
   const closeShareImage = document.getElementById("close-share-image");
   if (closeShareImage) {
     closeShareImage.onclick = () => {
@@ -238,7 +205,6 @@ async function main() {
       deepAR.setPaused(false);
     };
   }
-
   const closeShareVideo = document.getElementById("close-share-video");
   if (closeShareVideo) {
     closeShareVideo.onclick = () => {
@@ -252,14 +218,12 @@ async function main() {
       }
     };
   }
-
   const webShareSupported = "canShare" in navigator;
 
   const shareButtonText = document.getElementById("share-image-btn-text");
   if (shareButtonText) {
     shareButtonText.textContent = webShareSupported ? "Share" : "Download";
   }
-
   const shareButtonDownloadIcon = document.getElementById(
     "share-image-btn-download-icon"
   );
@@ -268,14 +232,12 @@ async function main() {
       ? "none"
       : "block";
   }
-
   const shareButtonSendIcon = document.getElementById(
     "share-image-btn-send-icon"
   );
   if (shareButtonSendIcon) {
     shareButtonSendIcon.style.display = webShareSupported ? "block" : "none";
   }
-
   const shareButton = document.getElementById("share-image-btn");
   if (shareButton) {
     shareButton.onclick = () => {
@@ -290,11 +252,9 @@ async function main() {
       }, "image/jpeg");
     };
   }
-
   const shareOrDownload = async (blob, fileName) => {
     const webShareSupported = "canShare" in navigator;
     console.log("type: blob.type", blob.type);
-    // Using the Web Share API.
     if (webShareSupported) {
       const data = {
         files: [
@@ -302,9 +262,6 @@ async function main() {
             type: blob.type,
           }),
         ],
-        // cannot add title or text to web share or some apps (like whatsapp) will consider it a text share and not show the image :()
-        // title,
-        // text,
       };
       if (navigator.canShare(data)) {
         shareStartedEvent(blob.type);
@@ -322,26 +279,7 @@ async function main() {
         }
       }
     }
-    // Fallback implementation.
-    const a = document.createElement("a");
-    a.download = fileName;
-    a.style.display = "none";
-    a.href = URL.createObjectURL(blob);
-    a.addEventListener("click", () => {
-      setTimeout(() => {
-        URL.revokeObjectURL(a.href);
-        a.remove();
-      }, 1000);
-    });
-    document.body.append(a);
-    a.click();
-    shareDownloadedEvent(blob.type);
   };
-
-  if (platform.os.family === "Windows" || platform.os.family === "OS X") {
-    console.log("platform.os.family", platform.os.family);
-    await generateQRCode(window.location.href);
-  }
 
   const welcomePopupWrapper = document.getElementById("welcome-popup-wrapper");
   if (welcomePopupWrapper) {
@@ -358,42 +296,17 @@ async function main() {
     }
   }
 }
-
 window.onload = main;
-
-async function generateQRCode(url) {
-  const qrCodeCanvasContainer = document.getElementById(
-    "qr-code-canvas-container"
-  );
-  const qrCodeCavas = document.getElementById("qr-code-canvas");
-
-  try {
-    await QRCode.toCanvas(qrCodeCavas, url, {
-      scale: 10,
-    });
-    qrCodeCanvasContainer.style.display = "flex";
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-/**
- * Tracking events
- * These are just suggestions, feel free to add or remove events as you wish
- * */
-
 export function trackEvent(event, props) {
   console.log("trackEvent", event, props);
   // you can send events to your favorite analytics tool here
 }
-
 export function initialLoading() {
   timing.initialLoadingEvent = (performance.now() - window.startTime) / 1000.0;
   trackEvent("Initial UI Loaded", {
     Time: timing.initialLoadingEvent,
   });
 }
-
 export function deepARInitialisedEvent(platform) {
   timing.uiLoaded = (performance.now() - window.startTime) / 1000.0;
   var majorVersion = parseInt(platform.version.split(".")[0]);
@@ -408,7 +321,6 @@ export function deepARInitialisedEvent(platform) {
     Platform: JSON.stringify(pl),
   });
 }
-
 export function cameraPermissionAskedEvent() {
   timing.cameraPermissionAsked =
     (performance.now() - window.startTime) / 1000.0;
@@ -416,7 +328,6 @@ export function cameraPermissionAskedEvent() {
     Time: timing.cameraPermissionAsked,
   });
 }
-
 export function cameraPermissionDeniedEvent() {
   timing.cameraPermissionDenied =
     (performance.now() - window.startTime) / 1000.0;
@@ -424,7 +335,6 @@ export function cameraPermissionDeniedEvent() {
     Time: timing.cameraPermissionDenied,
   });
 }
-
 export function cameraPermissionGrantedEvent() {
   timing.cameraPermissionGranted =
     (performance.now() - window.startTime) / 1000.0;
@@ -432,41 +342,6 @@ export function cameraPermissionGrantedEvent() {
     Time: timing.cameraPermissionGranted,
   });
 }
-
-export function effectSelectedEvent(effect) {
-  var timeNow = (performance.now() - window.startTime) / 1000.0;
-  trackEvent("Effect Selected", {
-    Time: timeNow,
-    Effect: effect.name,
-    Path: effect.path,
-  });
-}
-
-export function takePhotoEvent() {
-  var timeNow = (performance.now() - window.startTime) / 1000.0;
-  trackEvent("Photo Taken", {
-    Time: timeNow,
-    Effect: window.effectName,
-  });
-}
-
-export function startVideoRecordingEvent() {
-  var timeNow = (performance.now() - window.startTime) / 1000.0;
-  trackEvent("Start Video Recording", {
-    Time: timeNow,
-    Effect: window.effectName,
-  });
-}
-
-export function endVideoRecordingEvent(duration) {
-  var timeNow = (performance.now() - window.startTime) / 1000.0;
-  trackEvent("End Video Recording", {
-    Time: timeNow,
-    Effect: window.effectName,
-    Duration_Seconds: duration,
-  });
-}
-
 export function shareStartedEvent(fileType) {
   var timeNow = (performance.now() - window.startTime) / 1000.0;
   trackEvent("Share Started", {
@@ -475,7 +350,6 @@ export function shareStartedEvent(fileType) {
     File_Type: fileType,
   });
 }
-
 export function shareCompletedEvent(fileType) {
   var timeNow = (performance.now() - window.startTime) / 1000.0;
   trackEvent("Share Completed", {
@@ -484,16 +358,6 @@ export function shareCompletedEvent(fileType) {
     File_Type: fileType,
   });
 }
-
-export function shareDownloadedEvent(fileType) {
-  var timeNow = (performance.now() - window.startTime) / 1000.0;
-  trackEvent("Share Downloaded", {
-    Time: timeNow,
-    Effect: window.effectName,
-    File_Type: fileType,
-  });
-}
-
 export function arLoadedEvent() {
   var timeNow = (performance.now() - window.startTime) / 1000.0;
   timing.arLoaded = timeNow;
@@ -501,27 +365,8 @@ export function arLoadedEvent() {
     Time: timeNow,
   });
 }
-
-export function moreInfoScreenEvent() {
-  var timeNow = (performance.now() - window.startTime) / 1000.0;
-  trackEvent("More Info Screen Viewed", {
-    Time: timeNow,
-  });
-}
-
-export function moreInfoTrayEvent() {
-  var timeNow = (performance.now() - window.startTime) / 1000.0;
-  trackEvent("More Info Tray Viewed", {
-    Time: timeNow,
-  });
-}
-
 var trackUsageEventNumber = 0;
 var trackUsageEventInterval = 1000;
-
-/**
- *  Tracks usage every 1 second
- */
 export function trackUsage() {
   trackUsageEventNumber++;
 
@@ -540,15 +385,3 @@ export function trackUsage() {
     trackUsage();
   }, timeout || 1000);
 }
-
-export const loadImage = async (url) =>
-  new Promise(async (resolve, reject) => {
-    const image = new Image();
-    image.addEventListener("load", () => {
-      resolve(image);
-    });
-    image.addEventListener("error", (err) => reject(err));
-    image.setAttribute("crossorigin", "anonymous");
-    image.crossOrigin = "Anonymous";
-    image.src = url;
-  });
