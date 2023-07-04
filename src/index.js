@@ -1,8 +1,6 @@
 import * as deepar from "deepar";
 import platform from "platform";
-import Carousel from "./carousel.js";
 import { CircularProgressBar } from "./circularProgressBar.js";
-import { stopRecording, startRecording, startRecordingiOS, stopRecordingiOS } from "./mp4CanvasRecorder.js";
 import QRCode from "qrcode";
 
 const VIDEO_TIME_LIMIT_SECONDS = 10;

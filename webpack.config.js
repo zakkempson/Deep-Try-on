@@ -1,4 +1,6 @@
+
 const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -9,14 +11,19 @@ module.exports = {
   },
   target: 'web',
   performance: {
-    maxEntrypointSize: 1000000,
-    maxAssetSize: 10000000,
+    maxEntrypointSize: 2000000,
+    maxAssetSize: 20000000,
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
   devServer: {
-    // other devServer configurations
     allowedHosts: 'all',
   }
-  
-  
-  
 };
+
+
+
+
+
