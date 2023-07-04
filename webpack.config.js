@@ -19,10 +19,9 @@ module.exports = {
   },
   devServer: {
     // other devServer configurations
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
+    allowedHosts: 'all',
   }
+  
   
   
 };
