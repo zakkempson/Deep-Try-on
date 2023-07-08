@@ -9,43 +9,94 @@ let params = new URLSearchParams(queryString);
 let id = params.get('id');
 console.log(id);
 let effect = {};
+
+const products = [
+  {
+    id: 1,
+    productName: "Prada Glasses",
+    img: "assets/images/tryon/prada.jpg",
+    price: 199,
+    effect1: {
+      trigger: "effect1",
+      path: "assets/effects/prada-glasses.deepar",
+      name: "Prada Glasses",
+    },
+    desc: "Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
+    likes: 220,
+  },
+  {
+    id: 2,
+    productName: "Airmax Nike shoes",
+    img: "assets/images/tryon/airmax-shoe2.jpg",
+    price: 299,
+    effect1: {
+      trigger: "effect1",
+      path: "assets/effects/airmax.deepar",
+      name: "Airmax Nike shoes",
+    },
+    desc: "Designed with the iconic Airmax cushioning system, these shoes offer exceptional comfort and impact absorption. The advanced cushioning technology provides a responsive and supportive feel, allowing you to stay comfortable and confident during your workouts or everyday activities.",
+    likes: 123,
+  },
+  {
+    id: 3,
+    productName: "Black Jens Hat",
+    img: "assets/images/tryon/jens-hat.jpg",
+    price: 99,
+    effect1: {
+      trigger: "effect1",
+      path: "assets/effects/simple-hat.deepar",
+      name: "Black Jens Hat",
+    },
+    desc: "With its timeless black color, the Black Jens Hat effortlessly complements any outfit, making it a versatile addition to your wardrobe. Step up your fashion game with this stylish and reliable hoodie that is sure to make a statement wherever you go.",
+    likes: 267,
+  },
+];
+
+function findEffect(){
+  console.log(id);
+  let product = products.filter((product)=>
+    product.id == id
+  ) 
+  return product[0].effect1;
+}
+console.log(findEffect());
 let effects = {
-
+  effect1: findEffect()
 };
+console.log(effects);
+// async function fetchJSONData() {
+//   let products = [];
+//   try {
+//     const response = await fetch('assets/json/effects.json');
+//     const data = await response.json();
+//     products = data.products;
+//     console.log(products);
+//   } catch (error) {
+//     console.error('Error fetching JSON data:', error);
+//   }
 
-async function fetchJSONData() {
-  let products = [];
-  try {
-    const response = await fetch('assets/json/effects.json');
-    const data = await response.json();
-    products = data.products;
-    console.log(products);
-  } catch (error) {
-    console.error('Error fetching JSON data:', error);
-  }
+//   let product = products.find((product) => {
+//     return product.id == id;
+//   });
 
-  let product = products.find((product) => {
-    return product.id == id;
-  });
+//   effect = product.effect1;
+//   effects = {
+//     effect1: effect
+//   };
+// }
 
-  effect = product.effect1;
-  effects = {
-    effect1: effect
-  };
-}
+// async function fetchDataAndAssignEffect() {
+//   try {
+//     await fetchJSONData();
+//     console.log(effect);
+//     console.log(effects);
+//   } catch (error) {
+//     console.log("error in effects"+error);
+//     // Handle error if needed
+//   }
+// }
 
-async function fetchDataAndAssignEffect() {
-  try {
-    await fetchJSONData();
-    console.log(effect);
-    console.log(effects);
-  } catch (error) {
-    console.log("error in effects"+error);
-    // Handle error if needed
-  }
-}
-
-fetchDataAndAssignEffect();
+// fetchDataAndAssignEffect();
 
 async function main() {
   initialLoading();
@@ -147,7 +198,7 @@ async function main() {
       const scale = window.devicePixelRatio;
       canvas.width = Math.floor(window.innerWidth * scale);
       canvas.height = Math.floor(window.innerHeight * scale);
-  
+
       deepAR = await deepar.initialize({
         licenseKey: "d0ed18eca49f760439c1d7a5fab6e56981a85daef65cea34ef2e52baf4d9464df0a8a4508ef93971",
         canvas,
@@ -163,20 +214,20 @@ async function main() {
           },
         },
       });
-  
+
       window.effectPath = effects.effect1.path;
       window.effectName = effects.effect1.name;
       deepARInitialisedEvent(platform);
-  
+
       const effectTitleElement = document.getElementById("effect-title");
       effectTitleElement.innerHTML = effects.effect1.name;
-  
+
       setUiScreen("ar-screen");
       arLoadedEvent();
       trackUsage();
-  
+
       deepAR.callbacks = {}; // Create an empty object for deepAR.callbacks
-  
+
       deepAR.callbacks.__deeparRendered = function () {
         // this allows us to render graphics (like a logo) on top of the deepAR canvas for the video recording
         if (!isRecording) {
@@ -187,11 +238,11 @@ async function main() {
         window.videoRecordingDurationSeconds = seconds;
         appendSeconds.innerHTML = seconds;
         circularProgressBar.setPercent(milliseconds / 10000);
-  
+
         if (seconds >= VIDEO_TIME_LIMIT_SECONDS && isRecording) {
           stopRecordingWithCallback();
         }
-  
+
         watermarkCtx.drawImage(
           canvas,
           0,
@@ -200,7 +251,7 @@ async function main() {
           watermarkedCanvas.height
         );
       };
-  
+
       deepAR.callbacks.onFaceTracked = function (face) {
         if (!faceTracked) {
           faceTracked = true;
@@ -213,7 +264,7 @@ async function main() {
       cameraPermissionDeniedEvent();
     }
   }
-  
+
 
 
   const updateCanvasSize = () => {
