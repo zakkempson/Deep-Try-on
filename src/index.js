@@ -52,16 +52,14 @@ const products = [
   },
 ];
 
-function findEffect(){
-  console.log(id);
-  let product = products.filter((product)=>
-    product.id == id
-  ) 
-  return product[0].effect1;
-}
-console.log(findEffect());
+
+let product = products.filter((product)=>
+  product.id == id
+) 
+
+
 let effects = {
-  effect1: findEffect()
+  effect1: product[0].effect1
 };
 console.log(effects);
 // async function fetchJSONData() {
