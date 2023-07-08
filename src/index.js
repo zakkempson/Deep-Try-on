@@ -9,6 +9,13 @@ let params = new URLSearchParams(queryString);
 let id = params.get('id');
 console.log(id);
 let effect = {};
+let effects = {
+  effect1: {
+    trigger: "effect1",
+    path: "assets/effects/prada-glasses.deepar",
+    name: "Prada Glasses"
+  }
+};
 
 const products = [
   {
@@ -52,16 +59,12 @@ const products = [
   },
 ];
 
+function filterArray(){
+  effect = products.filter((product)=>
+    product.id == id
+  ) 
+}
 
-let product = products.filter((product)=>
-  product.id == id
-) 
-
-
-let effects = {
-  effect1: product[0].effect1
-};
-console.log(effects);
 // async function fetchJSONData() {
 //   let products = [];
 //   try {
