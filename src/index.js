@@ -198,7 +198,7 @@ async function main() {
       deepAR = await deepar.initialize({
         licenseKey: "f49e579d3aae4bec866c371c328349702df093dd6fd0526eb1a78eca92981f58a98a230f6491dbbc",
         canvas,
-        effect: effects.effect1.path,
+        effect: "assets/effects/simple-hat.deepar",
         additionalOptions: {
           cameraConfig: {
             cameraPermissionAsked: () => {
