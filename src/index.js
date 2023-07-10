@@ -10,11 +10,6 @@ let id = params.get('id');
 console.log(id);
 let effect = {};
 let effects = {
-  effect1: {
-    trigger: "effect1",
-    path: "assets/effects/prada-glasses.deepar",
-    name: "Prada Glasses"
-  }
 };
 
 const products = [
@@ -65,39 +60,39 @@ function filterArray(){
   ) 
 }
 
-// async function fetchJSONData() {
-//   let products = [];
-//   try {
-//     const response = await fetch('assets/json/effects.json');
-//     const data = await response.json();
-//     products = data.products;
-//     console.log(products);
-//   } catch (error) {
-//     console.error('Error fetching JSON data:', error);
-//   }
+async function fetchJSONData() {
+  let products = [];
+  try {
+    const response = await fetch('assets/json/effects.json');
+    const data = await response.json();
+    products = data.products;
+    console.log(products);
+  } catch (error) {
+    console.error('Error fetching JSON data:', error);
+  }
 
-//   let product = products.find((product) => {
-//     return product.id == id;
-//   });
+  let product = products.find((product) => {
+    return product.id == id;
+  });
 
-//   effect = product.effect1;
-//   effects = {
-//     effect1: effect
-//   };
-// }
+  effect = product.effect1;
+  effects = {
+    effect1: effect
+  };
+}
 
-// async function fetchDataAndAssignEffect() {
-//   try {
-//     await fetchJSONData();
-//     console.log(effect);
-//     console.log(effects);
-//   } catch (error) {
-//     console.log("error in effects"+error);
-//     // Handle error if needed
-//   }
-// }
+async function fetchDataAndAssignEffect() {
+  try {
+    await fetchJSONData();
+    console.log(effect);
+    console.log(effects);
+  } catch (error) {
+    console.log("error in effects"+error);
+    // Handle error if needed
+  }
+}
 
-// fetchDataAndAssignEffect();
+fetchDataAndAssignEffect();
 
 async function main() {
   initialLoading();
