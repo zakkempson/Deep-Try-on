@@ -194,9 +194,9 @@ async function main() {
       const scale = window.devicePixelRatio;
       canvas.width = Math.floor(window.innerWidth * scale);
       canvas.height = Math.floor(window.innerHeight * scale);
-
+      console.log("ggg"+effects.effect1.path);
       deepAR = await deepar.initialize({
-        licenseKey: "d0ed18eca49f760439c1d7a5fab6e56981a85daef65cea34ef2e52baf4d9464df0a8a4508ef93971",
+        licenseKey: "f49e579d3aae4bec866c371c328349702df093dd6fd0526eb1a78eca92981f58a98a230f6491dbbc",
         canvas,
         effect: effects.effect1.path,
         additionalOptions: {
