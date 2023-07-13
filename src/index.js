@@ -58,41 +58,47 @@ function filterArray(){
   effect = products.filter((product)=>
     product.id == id
   ) 
+  effect = effect[0].effect1
+  console.log(effect);
 }
-
-async function fetchJSONData() {
-  let products = [];
-  try {
-    const response = await fetch('assets/json/effects.json');
-    const data = await response.json();
-    products = data.products;
-    console.log(products);
-  } catch (error) {
-    console.error('Error fetching JSON data:', error);
-  }
-
-  let product = products.find((product) => {
-    return product.id == id;
-  });
-
-  effect = product.effect1;
-  effects = {
-    effect1: effect
-  };
+filterArray()
+effects = {
+  effect1:effect
 }
+console.log(effects);
+// async function fetchJSONData() {
+//   let products = [];
+//   try {
+//     const response = await fetch('assets/json/effects.json');
+//     const data = await response.json();
+//     products = data.products;
+//     console.log(products);
+//   } catch (error) {
+//     console.error('Error fetching JSON data:', error);
+//   }
 
-async function fetchDataAndAssignEffect() {
-  try {
-    await fetchJSONData();
-    console.log(effect);
-    console.log(effects);
-  } catch (error) {
-    console.log("error in effects"+error);
-    // Handle error if needed
-  }
-}
+//   let product = products.find((product) => {
+//     return product.id == id;
+//   });
 
-fetchDataAndAssignEffect();
+//   effect = product.effect1;
+//   effects = {
+//     effect1: effect
+//   };
+// }
+
+// async function fetchDataAndAssignEffect() {
+//   try {
+//     await fetchJSONData();
+//     console.log(effect);
+//     console.log(effects);
+//   } catch (error) {
+//     console.log("error in effects"+error);
+//     // Handle error if needed
+//   }
+// }
+
+// fetchDataAndAssignEffect();
 
 async function main() {
   initialLoading();
@@ -198,7 +204,7 @@ async function main() {
       deepAR = await deepar.initialize({
         licenseKey: "f49e579d3aae4bec866c371c328349702df093dd6fd0526eb1a78eca92981f58a98a230f6491dbbc",
         canvas,
-        effect: "assets/effects/simple-hat.deepar",
+        effect:effects.effect1.path,
         additionalOptions: {
           cameraConfig: {
             cameraPermissionAsked: () => {
