@@ -444,7 +444,7 @@
                         <p class="prod-desc"></p>
                         <span class="prod-price">₪ </span>
                         <div class="place-bet-area mt-3">
-                            <div class="rn-bet-create">
+                            <div class="rn-bet-create d-flex">
 
                                 <div class="bid-list left-bid">
                                     <h6 class="title">Auction has ended</h6>
@@ -467,13 +467,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="qr-code-canvas-container" style="padding-inline: 10px; padding-top: 15px; width: calc(100% - 30px);
+                                max-width: 250px;">
+                                    <p style="margin-bottom: 15px; color: white;">
+                                        Try it on mobile
+                                    </p>
+                                    <img src="" id="qr-img" class="w-100" alt="">
+                                </div>
                             </div>
                             <!-- <a class="btn btn-primary-alta mt--30" href="#">Place a Bid</a> -->
                             <button type="button" class="btn btn-primary-alta mt--30" data-bs-toggle="modal"
                                 data-bs-target="#placebidModal">Add to Cart</button>
-
-
-
                         </div>
                     </div>
                 </div>

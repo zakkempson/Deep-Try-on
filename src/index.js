@@ -1,7 +1,7 @@
 import * as deepar from "deepar";
 import platform from "platform";
 import { CircularProgressBar } from "./circularProgressBar.js";
-import QRCode from "qrcode";
+// import QRCode from "qrcode";
 
 const VIDEO_TIME_LIMIT_SECONDS = 10;
 let queryString = window.location.search;
@@ -389,10 +389,10 @@ async function main() {
     shareDownloadedEvent(blob.type);
   };
 
-  if (platform.os.family === "Windows" || platform.os.family === "OS X") {
-    console.log("platform.os.family", platform.os.family);
-    await generateQRCode(window.location.href);
-  }
+  // if (platform.os.family === "Windows" || platform.os.family === "OS X") {
+  //   console.log("platform.os.family", platform.os.family);
+  //   await generateQRCode(window.location.href);
+  // }
 
   const welcomePopupWrapper = document.getElementById("welcome-popup-wrapper");
   if (welcomePopupWrapper) {
@@ -412,21 +412,21 @@ async function main() {
 
 window.onload = main;
 
-async function generateQRCode(url) {
-  const qrCodeCanvasContainer = document.getElementById(
-    "qr-code-canvas-container"
-  );
-  const qrCodeCavas = document.getElementById("qr-code-canvas");
+// async function generateQRCode(url) {
+//   const qrCodeCanvasContainer = document.getElementById(
+//     "qr-code-canvas-container"
+//   );
+//   const qrCodeCavas = document.getElementById("qr-code-canvas");
 
-  try {
-    await QRCode.toCanvas(qrCodeCavas, url, {
-      scale: 10,
-    });
-    qrCodeCanvasContainer.style.display = "flex";
-  } catch (error) {
-    console.error(error);
-  }
-}
+//   try {
+//     await QRCode.toCanvas(qrCodeCavas, url, {
+//       scale: 10,
+//     });
+//     qrCodeCanvasContainer.style.display = "flex";
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
 /**
  * Tracking events

@@ -11,7 +11,8 @@
                 "name": "Prada Glasses"
             },
             "desc": "Made from high-quality fabrics, this hoodie provides a comfortable and breathable experience, ensuring you stay cool and confident throughout the day. Its soft texture and exceptional durability make it a reliable and long-lasting addition to your wardrobe.",
-            "likes": 220
+            "likes": 220,
+            "qrImg":"assets/images/tryon/glasses-qr.png"
         },
         {
             "id": 2,
@@ -24,7 +25,9 @@
                 "name": "Airmax Nike shoes"
             },
             "desc": "Designed with the iconic Airmax cushioning system, these shoes offer exceptional comfort and impact absorption. The advanced cushioning technology provides a responsive and supportive feel, allowing you to stay comfortable and confident during your workouts or everyday activities.",
-            "likes": 123
+            "likes": 123,
+            "qrImg":"assets/images/tryon/shoes-qr.png"
+
         },
         {
             "id": 3,
@@ -37,7 +40,8 @@
                 "name": "Black Jens Hat"
             },
             "desc": "With its timeless black color, the Black Jens Hat effortlessly complements any outfit, making it a versatile addition to your wardrobe. Step up your fashion game with this stylish and reliable hoodie that is sure to make a statement wherever you go.",
-            "likes": 267
+            "likes": 267,
+            "qrImg":"assets/images/tryon/hat-qr.png"
         }
     ]
 }

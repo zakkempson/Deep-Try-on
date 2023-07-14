@@ -47,6 +47,7 @@ async function fetchJSONData() {
     document.querySelector('.prod-price').innerHTML += product.price
     document.querySelector('.prod-desc').innerHTML += product.desc
     document.querySelector('.prod-likes').innerHTML = product.likes
+    document.querySelector('#qr-img').setAttribute('src', `${product.qrImg}`)   
 }
 fetchJSONData()
 
