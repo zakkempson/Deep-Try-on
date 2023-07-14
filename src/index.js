@@ -202,42 +202,15 @@ async function main() {
       canvas.height = Math.floor(window.innerHeight * scale);
       console.log("ggg"+effects.effect1.path);
       console.log("id: "+id);
-      const useBackCamera = id === 2;
-
-      // Get all available video input devices
-      const videoDevices = await navigator.mediaDevices.enumerateDevices()
-        .then(devices => devices.filter(device => device.kind === 'videoinput'));
-      
-      let selectedDeviceId;
-      if (useBackCamera) {
-        // Find the back camera device, if available
-        const backCameraDevice = videoDevices.find(device => device.label.toLowerCase().includes('back'));
-      
-        if (backCameraDevice) {
-          selectedDeviceId = backCameraDevice.deviceId;
-        } else {
-          // Fallback to the first available video device
-          selectedDeviceId = videoDevices[0].deviceId;
-        }
-      } else {
-        // Fallback to the first available video device
-        selectedDeviceId = videoDevices[0].deviceId;
-      }
-      
-      // Request camera access with the selected device ID
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: selectedDeviceId },
-      });
-      const videoTrack = stream.getVideoTracks()[0];
-      
-      // Initialize deepAR with the selected camera track
+      const track = id==2?"environment":"user"
       deepAR = await deepar.initialize({
         licenseKey: "f49e579d3aae4bec866c371c328349702df093dd6fd0526eb1a78eca92981f58a98a230f6491dbbc",
         canvas,
-        effect: effects.effect1.path,
+        effect:effects.effect1.path,
         additionalOptions: {
+          facingMode: "track",
           cameraConfig: {
-            cameraStream: videoTrack,
+            facingMode: track,
             cameraPermissionAsked: () => {
               cameraPermissionAskedEvent();
             },
@@ -248,11 +221,9 @@ async function main() {
         },
       });
       
-
       window.effectPath = effects.effect1.path;
       window.effectName = effects.effect1.name;
       deepARInitialisedEvent(platform);
-
       const effectTitleElement = document.getElementById("effect-title");
       effectTitleElement.innerHTML = effects.effect1.name;
 
