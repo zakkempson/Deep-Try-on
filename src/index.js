@@ -201,12 +201,15 @@ async function main() {
       canvas.width = Math.floor(window.innerWidth * scale);
       canvas.height = Math.floor(window.innerHeight * scale);
       console.log("ggg"+effects.effect1.path);
+      console.log("id: "+id);
       deepAR = await deepar.initialize({
         licenseKey: "f49e579d3aae4bec866c371c328349702df093dd6fd0526eb1a78eca92981f58a98a230f6491dbbc",
         canvas,
         effect:effects.effect1.path,
         additionalOptions: {
+
           cameraConfig: {
+            facingMode: id===3?"environment":"user",
             cameraPermissionAsked: () => {
               cameraPermissionAskedEvent();
             },
