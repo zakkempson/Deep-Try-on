@@ -33,7 +33,7 @@ function display() {
 
     products.forEach((product) => {
         res += `
-        <div class="col-lg-4 col-md-6 col-sm-12 product mb-md-3">
+        <div class="col-lg-4 col-md-6 col-sm-12 product mb-4">
         <div class="product-style-one">
         <a href="product-details.html?id=${product.id}">
             <div class="card-thumbnail">
