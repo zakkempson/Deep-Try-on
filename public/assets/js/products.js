@@ -29,11 +29,11 @@ async function fetchJSONData() {
 fetchJSONData();
 function display() {
     console.log('hi');
-    let res = ``; 
+    let res = `<div class="row">`; 
 
     products.forEach((product) => {
         res += `
-        <div class="col-lg-4">
+        <div class="col-lg-4 col-md-6 col-sm-12 product mb-md-3">
         <div class="product-style-one">
         <a href="product-details.html?id=${product.id}">
             <div class="card-thumbnail">
@@ -77,6 +77,6 @@ function display() {
     });
 
 
-
+    res += '<div>'
     slider.innerHTML = res;
 }
