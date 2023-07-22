@@ -443,41 +443,20 @@
                         </div>
                         <p class="prod-desc"></p>
                         <span class="prod-price">₪ </span>
-                        <div class="place-bet-area mt-3">
-                            <div class="rn-bet-create d-flex">
-
-                                <div class="bid-list left-bid">
-                                    <h6 class="title">Auction has ended</h6>
-                                    <div class="countdown mt--15" data-date="2025-12-09">
-                                        <div class="countdown-container days">
-                                            <span class="countdown-value">87</span>
-                                            <span class="countdown-heading">D's</span>
-                                        </div>
-                                        <div class="countdown-container hours">
-                                            <span class="countdown-value">23</span>
-                                            <span class="countdown-heading">H's</span>
-                                        </div>
-                                        <div class="countdown-container minutes">
-                                            <span class="countdown-value">38</span>
-                                            <span class="countdown-heading">Min's</span>
-                                        </div>
-                                        <div class="countdown-container seconds">
-                                            <span class="countdown-value">27</span>
-                                            <span class="countdown-heading">Sec</span>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="place-bet-area mt-3 w-100" style="background: none; border: 0; padding: 10px;">
+                            <button class="btn btn-primary-alta mt--30" data-bs-toggle="modal"
+                                data-bs-target="#placebidModal" style="margin-bottom: 15px; color: white;"
+                                id="try-on-btn">
+                                Try it on mobile
+                            </button>
+                            <div id="qr-conatiner" class="d-none">
+                                <div id="qr-overlay"></div>
                                 <div id="qr-code-canvas-container" style="padding-inline: 10px; padding-top: 15px; width: calc(100% - 30px);
-                                max-width: 250px;">
-                                    <p style="margin-bottom: 15px; color: white;">
-                                        Try it on mobile
-                                    </p>
+                                max-width: 500px;">
                                     <img src="" id="qr-img" class="w-100" alt="">
                                 </div>
                             </div>
-                            <!-- <a class="btn btn-primary-alta mt--30" href="#">Place a Bid</a> -->
-                            <button type="button" class="btn btn-primary-alta mt--30" data-bs-toggle="modal"
-                                data-bs-target="#placebidModal">Add to Cart</button>
+
                         </div>
                     </div>
                 </div>

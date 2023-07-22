@@ -27138,3 +27138,27 @@ body.active-light-mode {
     margin-bottom: 2rem;
   }
 }
+#qr-conatiner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  position: fixed;
+  background-color: #000000ad;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#qr-overlay {
+  position: fixed;
+  background-color: #000000ad;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+#qr-img{
+  position: relative;
+  z-index: 99;
+}
